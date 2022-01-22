@@ -1,0 +1,40 @@
+domain              = "proxyemail.example.com"
+private_address     = "private@gmail.example.com"
+outbound_address    = "outbound@proxyemail.example.com"
+
+aws_region          = "us-east-1"
+ssm_prefix          = "/prod/lambda/proxyemail"
+
+[bucket]
+name                = "proxyemail"
+msg_prefix          = "/email"
+forward_meta_prefix = "/forward-metadata"
+outbox_prefix       = "/outbox"
+
+[[route]]
+# When we get an email from private@gmail.example.com addressed to
+# sms@proxyemail.example.com, invoke the email_to_sms sns topic
+src = "__PRIVATE_ADDRESS__"
+dst = "sms@proxyemail.example.com"
+sns = "arn:aws:sns:us-east-1:123456789012:email_to_sms"
+forward = false
+
+[[route]]
+# when we get any email addressed to mailinglist@proxyemail.example.com
+# ivoke the process_mailinglist sns topic and also forward it to
+# the private address
+src = "/.*/"
+dst = "moneystuff@proxyemail.example.com"
+sns = "arn:aws:sns:us-east-1:123456789012:process_mailinglist"
+forward = true
+
+
+[[route]]
+# send any emails addressed to sales@proxyemail.example.com to
+# our blackhole sns topic. Don't forward them. Include
+# suspect messages for forwarding.
+src = "/.*/"
+dst = "sales@proxyemail.example.com"
+sns = "arn:aws:sns:us-east-1:123456789012:email_blackhole"
+forward = false
+allow_suspect_messages = true

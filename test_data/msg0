@@ -1,0 +1,60 @@
+Return-Path: <psanford@example.com>
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+ by inbound-smtp.us-east-1.amazonaws.com with SMTP id 8ffg1s10miueo0o4qhb37ss9ilq26akqpo7pr8o1
+ for test@my-ses-email-domain.example.com;
+ Sun, 23 Jun 2019 22:35:53 +0000 (UTC)
+X-SES-Spam-Verdict: PASS
+X-SES-Virus-Verdict: PASS
+Received-SPF: pass (spfCheck: domain of _spf.google.com designates 209.85.210.41 as permitted sender) client-ip=209.85.210.41; envelope-from=psanford@example.com; helo=mail-ot1-f41.google.com;
+Authentication-Results: amazonses.com;
+ spf=pass (spfCheck: domain of _spf.google.com designates 209.85.210.41 as permitted sender) client-ip=209.85.210.41; envelope-from=psanford@example.com; helo=mail-ot1-f41.google.com;
+ dkim=pass header.i=@gmail.com;
+ dmarc=pass header.from=gmail.com;
+X-SES-RECEIPT: AEFBQUFBQUFBQUFFL3gvbmtzSG4yY3o0TzU3ZzBSbEZtcDBCMkZHdDBDd0QxOXpoV1NvUllaSmt2WUIzaU9KeFozM1YrWHZxVFZwVHd1QU0yWThEYllMdStVbk1PZmNNVGlQUklWTWg2TGFzWU5mcU02N0RZOFF6WTBLZ2FjSzlSUnhMSGVZclpPbXNoM0lOSWZadU43cW9vYnRvYVJvaFc3eTkwL3JLbFExQzhiNnJNOXFUdDZSYzF6L1dLSm1WRE4zN2xkM1kvZlRoN0pRZ3FBLzVKeVVjTmk1Um5pSVlaT3A5RWZwVUF6Q1NXQkhyQ2l6RTdlK2duZk5RcW1nZUdCdklWRytseHNJbzVMbUN2Rm9Ra3RDUTdBM1ljdncvcklZdERqVnNTcUJBTVFLa0hYZmxlYmc9PQ==
+X-SES-DKIM-SIGNATURE: a=rsa-sha256; q=dns/txt; b=Zd7O6fuG8E/5DdYjTPx+eKldUYtvBvBfd+2piv1925NtzM7kJruP5rKM1gZY34pB8KHR8fZhQSPsuKP3db3qNGYdUsqYlAjUcAFhRrii8BAGNZJWcDMR5nJj9nZdBfwyuac1uO0oCdENt+VQnv7MY9x7XI7kH8+IvBKfzuoRr54=; c=relaxed/simple; s=6gbrjpgwjskckoa6a5zn6fwqkn67xbtw; d=amazonses.com; t=1561329354; v=1; bh=1yVrBQi2TeSoerr+ItNztXvHkdy/hyDjaXjLExDiUdQ=; h=From:To:Cc:Bcc:Subject:Date:Message-ID:MIME-Version:Content-Type:X-SES-RECEIPT;
+Received: by mail-ot1-f41.google.com with SMTP id n5so11665974otk.1
+        for <test@my-ses-email-domain.example.com>; Sun, 23 Jun 2019 15:35:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=1yVrBQi2TeSoerr+ItNztXvHkdy/hyDjaXjLExDiUdQ=;
+        b=ao/LpbmcrWkCqUXXJb8gc8DDxESTWjFrtM40sK2Ie5Nls4ul1uVKw+cwPMSqfiZam9
+         bGhEkoUR+D4wn1mCHzeUdogGlXSUMg6YVNxPWH0AMTcxiKlEY3znMVjtMtYenGLgTS1p
+         aCN4wGnd48lLnNXcug0UUEgYHaK6hI9MAZLS9clcTuVSbqMcluuutxK++qHhh3Qcq3Me
+         m493wwcmPl3LPpXayTdeA7UYft1tP4vsyCT9Bm4MjmBf73LzBMpSWyAHb60lcVJp0TId
+         aztaUoDLWpvIPSgjH/dZb7kvDvWEOQc7+HqH2rg6tP+d5Zkau6KAgwB/Q1KDr+6/7Y6R
+         Emxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=1yVrBQi2TeSoerr+ItNztXvHkdy/hyDjaXjLExDiUdQ=;
+        b=eYdHXwPKlSnGx1vMDWRikPgfIkaJNN+FtlzKa/Yuh9maA5I/oTPF8LUZj5j41UTipz
+         iYfv5BaD6L0DltZmEOK9EWtVyqmcrB58cvGtpR21+vbIvK4G5qJoPdbzlT6SoIK8+4Vk
+         qLZB5N2eOUBAagkNHA89kcS3ImyroK0S7usPKVOBT9VK0c1BtpWl9tyc0bj8W1g5AlK8
+         19ou+hXC4o1yBanv4Vdvl+lfxqpC6RcW6RwwPpfauZ/TcJ59H+sm5oAH7fnG/ANijfyq
+         5bu4Q+CLLjANN+jB6SMR/ixtggKqavx7AsLBaojdNlA6iQSB84hq/LwQa6S+sXmskeAp
+         nYsw==
+X-Gm-Message-State: APjAAAXNI88hfYEfWTd0eRdv7sb7upm5BXrkBnlIOqDWkouFDnnwNq3c
+	vqU5ubkjTOIUHDbc6SWfWa4uk6zd2CXPEwzlzvOlUA==
+X-Google-Smtp-Source: APXvYqxkZqKLT/0tNxls8ATkM1Xst8TRNBMuefN2JqvuWh4lESyBZHCcdb75jBwgQxTBcpXisX475Hy2Xl1QKMNqRmA=
+X-Received: by 2002:a9d:6e04:: with SMTP id e4mr6239109otr.203.1561329352708;
+ Sun, 23 Jun 2019 15:35:52 -0700 (PDT)
+MIME-Version: 1.0
+From: Peter Sanford <psanford@example.com>
+Date: Sun, 23 Jun 2019 15:35:42 -0700
+Message-ID: <5B762F46B550CE2BAB51989E4F9F1280@mail.gmail.com>
+Subject: save off header
+To: test@my-ses-email-domain.example.com
+Content-Type: multipart/alternative; boundary="000000000000721689058c055169"
+
+--000000000000721689058c055169
+Content-Type: text/plain; charset="UTF-8"
+
+
+
+--000000000000721689058c055169
+Content-Type: text/html; charset="UTF-8"
+
+<div dir="ltr"><br></div>
+
+--000000000000721689058c055169--
