@@ -19,7 +19,6 @@ type Config struct {
 
 	OutboundAddress string `toml:"outbound_address"`
 
-	SSMPrefix string `toml:"ssm_prefix"`
 	AwsRegion string `toml:"aws_region"`
 	Bucket    Bucket `toml:"bucket"`
 
@@ -128,9 +127,6 @@ func (c *Config) validate() error {
 		return errors.New("outbound_address must be set")
 	}
 
-	if c.SSMPrefix == "" {
-		return errors.New("ssm_prefix must be set")
-	}
 	if c.AwsRegion == "" {
 		return errors.New("aws_region must be set")
 	}

@@ -3,12 +3,16 @@ private_address     = "private@gmail.example.com"
 outbound_address    = "outbound@proxyemail.example.com"
 
 aws_region          = "us-east-1"
-ssm_prefix          = "/prod/lambda/proxyemail"
 
 [bucket]
+# name is the name of your s3 bucket used for storing email messages
 name                = "proxyemail"
+# msg_prefix is where incoming messages are stored
 msg_prefix          = "/email"
+# forward_meta_prefix is where lambda-email stores meta data required for
+# replying to messages properly
 forward_meta_prefix = "/forward-metadata"
+# outbox_prefix is where pending outbound email are stored
 outbox_prefix       = "/outbox"
 
 [[route]]
