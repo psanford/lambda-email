@@ -32,7 +32,6 @@ dst = "moneystuff@proxyemail.example.com"
 sns = "arn:aws:sns:us-east-1:123456789012:process_mailinglist"
 forward = true
 
-
 [[route]]
 # send any emails addressed to sales@proxyemail.example.com to
 # our blackhole sns topic. Don't forward them. Include
