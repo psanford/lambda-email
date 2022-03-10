@@ -67,6 +67,17 @@ func main() {
 		log.Fatalf("Read email err: %s", err)
 	}
 
+	recipients := make([]string, 0, 1)
+	for _, to := range env.Root.Header["To"] {
+		recipients = append(recipients, to)
+	}
+	for _, cc := range env.Root.Header["Cc"] {
+		recipients = append(recipients, cc)
+	}
+	for _, bcc := range env.Root.Header["Bcc"] {
+		recipients = append(recipients, bcc)
+	}
+
 	rec := events.SimpleEmailRecord{
 		SES: events.SimpleEmailService{
 			Mail: events.SimpleEmailMessage{
@@ -79,7 +90,7 @@ func main() {
 				},
 			},
 			Receipt: events.SimpleEmailReceipt{
-				Recipients: []string{env.Root.Header.Get("To")},
+				Recipients: recipients,
 				DKIMVerdict: events.SimpleEmailVerdict{
 					Status: "PASS",
 				},
