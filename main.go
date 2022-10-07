@@ -137,6 +137,11 @@ func Handler(sse events.SimpleEmailEvent) error {
 				continue
 			}
 			if match {
+				if rule.Drop {
+					lgr.Info("matched_drop_rule")
+					return nil
+				}
+
 				if len(suspect) > 0 && !rule.AllowSuspectMessages {
 					lgr.Error("matched_rule_but_suspect", "rule", rule, "suspect", subject)
 					return fmt.Errorf("matched_rule_but_suspect %s", mail.MessageID)

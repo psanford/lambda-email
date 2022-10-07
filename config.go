@@ -31,6 +31,7 @@ type Route struct {
 	SNS                  string `toml:"sns"`
 	Forward              bool   `toml:"forward"`
 	AllowSuspectMessages bool   `toml:"allow_suspect_messages"`
+	Drop                 bool   `toml:"drop"`
 }
 
 type Bucket struct {
