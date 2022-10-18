@@ -699,38 +699,56 @@ func (r *Route) Match(toHeader []string, from string) (bool, error) {
 		err   error
 	)
 
-	if strings.HasPrefix(src, "/") && strings.HasSuffix(src, "/") {
-		src = strings.TrimPrefix(src, "/")
-		src = strings.TrimSuffix(src, "/")
-
-		srcRe, err = regexp.Compile(src)
-		if err != nil {
-			return false, fmt.Errorf("src regexp compile err for %s: %w", r.Src, err)
-		}
+	err = buildRuleMatchRe(src, &srcRe)
+	if err != nil {
+		return false, err
 	}
 
-	if srcRe != nil {
-		if !srcRe.MatchString(from) {
-			return false, nil
-		}
-	} else if src != from {
+	if !fuzzyMatchAddr(from, srcRe, src) {
 		return false, nil
+	}
+
+	err = buildRuleMatchRe(dst, &dstRe)
+	if err != nil {
+		return false, err
 	}
 
 	var match bool
 	for _, toAddr := range toHeader {
-		if addr, err := gomail.ParseAddress(toAddr); err == nil {
-			if dstRe != nil {
-				if dstRe.MatchString(addr.Address) {
-					match = true
-					break
-				}
-			} else if addr.Address == dst {
-				match = true
-				break
-			}
+		if match = fuzzyMatchAddr(toAddr, dstRe, dst); match == true {
+			break
 		}
 	}
 
 	return match, nil
+}
+
+func fuzzyMatchAddr(addr string, matchRe *regexp.Regexp, matchText string) bool {
+	if parsedAddr, err := gomail.ParseAddress(addr); err == nil {
+		if matchRe != nil {
+			if matchRe.MatchString(parsedAddr.Address) {
+				return true
+			}
+		} else if parsedAddr.Address == matchText {
+			return true
+		}
+	}
+
+	return false
+}
+
+func buildRuleMatchRe(addr string, re **regexp.Regexp) error {
+	origAddr := addr
+	if strings.HasPrefix(addr, "/") && strings.HasSuffix(addr, "/") {
+		addr = strings.TrimPrefix(addr, "/")
+		addr = strings.TrimSuffix(addr, "/")
+
+		addrRe, err := regexp.Compile(addr)
+		if err != nil {
+			return fmt.Errorf("addr regexp compile err for %s: %w", origAddr, err)
+		}
+
+		*re = addrRe
+	}
+	return nil
 }

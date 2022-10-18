@@ -150,6 +150,27 @@ func TestLambdaEmail(t *testing.T) {
 	}
 }
 
+func TestRuleMatch(t *testing.T) {
+	r := Route{
+		Src:  "furriest@imperative.blowsy.mustachio",
+		Dst:  "/.*/",
+		Drop: true,
+	}
+
+	var (
+		to   = "smithereens@reuses.bloodhounds"
+		from = "Steve Mustachio <furriest@imperative.blowsy.mustachio>"
+	)
+
+	match, err := r.Match([]string{to}, from)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !match {
+		t.Fatalf("Expected match")
+	}
+}
+
 var (
 	fakeS3      = make(map[bucketKey][]byte)
 	sentEmails  []sentEmail
